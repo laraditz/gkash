@@ -17,6 +17,7 @@ class CreateGkashPaymentsTable extends Migration
             $table->uuid('id')->primary();
             $table->string('code', 100)->nullable();
             $table->string('ref_no', 100)->nullable();
+            $table->string('vendor_ref_no', 100)->nullable();
             $table->string('currency_code', 5)->nullable();
             $table->decimal('amount', 11, 2)->nullable();
             $table->smallInteger('status')->nullable();

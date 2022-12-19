@@ -78,7 +78,7 @@ class GkashController extends Controller
 
                 $payment->status = $storeStatus;
                 if ($request->has('POID')) {
-                    $payment->ref_no = $poid;
+                    $payment->vendor_ref_no = $poid;
                 }
 
                 $payment->save();

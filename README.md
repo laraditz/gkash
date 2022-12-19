@@ -41,10 +41,10 @@ To create payment and get the payment URL to be redirected to. You can use servi
 // Create a payment
 
 // Using service container
-$payment = app('gkash')->amount(100)->returnUrl('https://returnurl.com')->createPayment();
+$payment = app('gkash')->refNo('ABC1234')->amount(100)->returnUrl('https://returnurl.com')->createPayment();
 
 // Using facade
-$payment =  \Gkash::amount(100)->returnUrl('https://returnurl.com')->createPayment();
+$payment =  \Gkash::refNo('ABC1234')->amount(100)->returnUrl('https://returnurl.com')->createPayment();
 
 ```
 
