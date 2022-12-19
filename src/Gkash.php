@@ -3,9 +3,9 @@
 namespace Laraditz\Gkash;
 
 use Illuminate\Support\Str;
+use Laraditz\Gkash\Enums\PaymentStatus;
 use Laraditz\Gkash\Models\GkashPayment;
 use LogicException;
-use Laraditz\Gkash\Enums\PaymentStatus;
 
 class Gkash
 {
@@ -21,6 +21,8 @@ class Gkash
 
     private $returnUrl;
 
+    private $refNo;
+
     public function __construct($merchantID = null, $signatureKey = null)
     {
         $this->setMerchantID($merchantID ?? config('gkash.merchant_id'));
@@ -34,6 +36,7 @@ class Gkash
     {
         throw_if(!$this->getMerchantID(), LogicException::class, 'Merchant ID not set.');
         throw_if(!$this->getSignatureKey(), LogicException::class, 'Signature Key not set.');
+        throw_if(!$this->getRefNo(), LogicException::class, 'Ref No not set.');
 
         $metadata = array_merge(
             [
@@ -46,6 +49,7 @@ class Gkash
         throw_if(!$this->getReturnUrl(), LogicException::class, 'Please set a return URL.');
 
         $payment = GkashPayment::create([
+            'ref_no' => $this->getRefNo(),
             'currency_code' => $this->getCurrencyCode(),
             'amount' => $this->getAmount(),
             'return_url' => $this->getReturnUrl(),
@@ -95,6 +99,23 @@ class Gkash
     public function getReturnUrl()
     {
         return $this->returnUrl;
+    }
+
+    public function refNo($refNo)
+    {
+        $this->setRefNo($refNo);
+
+        return $this;
+    }
+
+    public function setRefNo($refNo)
+    {
+        $this->refNo = $refNo;
+    }
+
+    public function getRefNo()
+    {
+        return $this->refNo;
     }
 
 
