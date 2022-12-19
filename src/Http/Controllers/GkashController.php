@@ -5,6 +5,7 @@ namespace Laraditz\Gkash\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laraditz\Gkash\Events\BackendReceived;
+use Laraditz\Gkash\Models\GkashMessage;
 use Laraditz\Gkash\Models\GkashPayment;
 use LogicException;
 
@@ -44,7 +45,7 @@ class GkashController extends Controller
     {
         echo 'OK';
 
-        logger()->info('Gkash Backend : Received', $request->all());
+        // logger()->info('Gkash Backend : Received', $request->all());
 
         $poid = $request->POID;
         $code = $request->cartid;
@@ -53,6 +54,11 @@ class GkashController extends Controller
 
         if ($code) {
             event(new BackendReceived($request->all()));
+
+            GkashMessage::create([
+                'action' => Str::after(__METHOD__, '::'),
+                'response' => $request->all()
+            ]);
 
             $payment = GkashPayment::where('code', $code)->first();
 
