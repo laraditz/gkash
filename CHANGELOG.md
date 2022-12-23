@@ -2,6 +2,11 @@
 
 All notable changes to `laraditz/gkash` will be documented in this file
 
+## 1.0.2 - 2022-12-23
+
+### Changed
+- Update callback.
+
 ## 1.0.1 - 2022-12-19
 
 ### Added
