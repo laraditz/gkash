@@ -4,6 +4,7 @@ namespace Laraditz\Gkash\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laraditz\Gkash\Enums\PaymentStatus;
 use Laraditz\Gkash\Events\BackendReceived;
 use Laraditz\Gkash\Models\GkashMessage;
 use Laraditz\Gkash\Models\GkashPayment;
@@ -47,17 +48,20 @@ class GkashController extends Controller
 
         // logger()->info('Gkash Backend : Received', $request->all());
 
+        $merchant_id = $request->CID;
         $poid = $request->POID;
         $code = $request->cartid;
         $status = $request->status;
         $signature = $request->signature;
 
+
         if ($code) {
-            event(new BackendReceived($request->all()));
+            $data = $request->all();
+            $dataCollection = $request->collect();
 
             GkashMessage::create([
                 'action' => Str::after(__METHOD__, '::'),
-                'response' => $request->all()
+                'response' => $data
             ]);
 
             $payment = GkashPayment::where('code', $code)->first();
@@ -66,8 +70,8 @@ class GkashController extends Controller
 
                 $matchSignature = app('gkash')->generatResponseeSignature($payment, $poid, $status);
 
-                if ($signature === $matchSignature) {
-                    logger()->info('Gkash Backend : Signature not match', $request->all());
+                if ($signature !== $matchSignature) {
+                    logger()->info('Gkash Backend : Signature not match', $data);
                     exit;
                 }
 
@@ -82,8 +86,25 @@ class GkashController extends Controller
                 }
 
                 $payment->save();
+                $payment->refresh();
+
+                $dataCollection = $dataCollection->reject(function ($value, $key) {
+                    return in_array($key, ['CID', 'POID', 'cartid']) ? true : false;
+                })->mapWithKeys(function ($item, $key) {
+                    return [Str::snake($key) => $item];
+                })->merge([
+                    'id' => $payment->id,
+                    'merchant_id' => $merchant_id,
+                    'code' => $payment->code,
+                    'ref_no' => $payment->ref_no,
+                    'vendor_ref_no' => $payment->vendor_ref_no,
+                    'status' => $payment->status,
+                    'status_text' => PaymentStatus::getDescription($payment->status),
+                ])->sortKeys();
+
+                event(new BackendReceived($dataCollection->toArray()));
             } else {
-                logger()->info('Gkash Backend : Payment record not found', $request->all());
+                logger()->info('Gkash Backend : Payment record not found', $data);
                 exit;
             }
         } else {

@@ -11,4 +11,12 @@ class Enums
 
         return data_get($constant, $var);
     }
+
+    public static function getDescription($var)
+    {
+        $oClass = new \ReflectionClass(get_called_class());
+        $constant = $oClass->getConstants();
+
+        return array_search($var, $constant);
+    }
 }

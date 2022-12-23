@@ -61,17 +61,29 @@ Return example:
 Redirect to the `payment_url` to proceed to Gkash payment page. Once done, you will be redirected to the returnUrl. Below is the sample response returned.
 ```php
 [
-  "status" => "66 - Failed",
-  "description" => "Terminal ID/TradingName not configured.",
-  "CID" => "M161-U-40592",
-  "POID" => "M161-PO-149461",
-  "cartid" => "5Xpj9IPN",
   "amount" => "1.00",
+  "code" => "5Xpj9IPN",
   "currency" => "MYR",
-  "PaymentType" => "TnG ECOMM",
-  "signature" => "0bfe2724c9c29dcd5c086a1f45f28ce0b702dd86dddef8eb40d46001ce76dff76a8f18b9f993f6cbb104206041866f239c4239878f62c043b4252a0c00a3a374"
+  "id" => "98043afa-d795-43b1-a6da-af735ba43db0",
+  "merchant_id" => "MXXX-X-XXXXX",
+  "payment_type" => "TnG ECOMM",
+  "ref_no" => "ABC14393647840",
+  "signature" => "0bfe2724c9c29dcd5c086a1f45f28ce0b702dd86dddef8eb40d46001ce76dff76a8f18b9f993f6cbb104206041866f239c4239878f62c043b4252a0c00a3a374",
+  "status" => 3,
+  "status_text" => "Success",
+  "vendor_ref_no" => "MXXX-PO-XXXXXX",
 ]
 ```
+
+| Payment Status  |  Description  
+|-----------------|--------------------------|
+| 1               | Created
+| 2               | Pending
+| 3               | Success
+| 4               | Failed
+| 5               | Cancelled
+| 6               | None
+
 
 ## Event
 
