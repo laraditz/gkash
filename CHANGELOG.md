@@ -2,6 +2,11 @@
 
 All notable changes to `laraditz/gkash` will be documented in this file
 
+## 1.0.3 - 2023-01-05
+
+### Changed
+- Update live URL and payment route.
+
 ## 1.0.2 - 2022-12-23
 
 ### Changed
