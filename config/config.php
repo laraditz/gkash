@@ -20,4 +20,5 @@ return [
         'base_url' => 'https://api-staging.pay.asia/api',
     ],
     'middleware' => ['api'],
+    'log_request' => env('GKASH_LOG_REQUEST', false),
 ];
