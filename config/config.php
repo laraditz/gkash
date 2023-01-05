@@ -8,10 +8,10 @@ return [
     'merchant_id' => env('GKASH_MERCHANT_ID'),
     'signature_key' => env('GKASH_SIGNATURE_KEY'),
     'currency_code' => env('GKASH_CURRENCY_CODE', 'MYR'),
-    'base_url' => 'https://api.pay.asia/api',
+    'base_url' => 'https://api.gkash.my/api',
     'routes' => [
         'prefix' => 'gkash',
-        'payment' => 'PaymentForm.aspx',
+        'payment' => 'paymentform.aspx',
         'payment_query' => 'payment/query',
         'payment_refund' => 'payment/refund',
     ],
