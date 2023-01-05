@@ -49,6 +49,7 @@ class Gkash
         throw_if(!$this->getReturnUrl(), LogicException::class, 'Please set a return URL.');
 
         $payment = GkashPayment::create([
+            'merchant_id' => $this->getMerchantID(),
             'ref_no' => $this->getRefNo(),
             'currency_code' => $this->getCurrencyCode(),
             'amount' => $this->getAmount(),
@@ -181,16 +182,16 @@ class Gkash
 
     public function generateSignature(GkashPayment $payment)
     {
-        $amount = $payment->amount * 100;
-        $string = $this->getSignatureKey() . ';' . $this->getMerchantID() . ';' . $payment->code . ';' . $amount . ';' . $payment->currency_code;
+        $amount = Str::of($payment->amount)->remove('.')->remove(',');
+        $string = $this->getSignatureKey() . ';' . $payment->merchant_id . ';' . $payment->code . ';' . $amount . ';' . $payment->currency_code;
 
         return hash('sha512', strtoupper($string));
     }
 
     public function generatResponseeSignature(GkashPayment $payment, string $poid, string $status)
     {
-        $amount = $payment->amount * 100;
-        $string = $this->getSignatureKey() . ';' . $this->getMerchantID() . ';' . $poid . ';' . $payment->code . ';' . $amount . ';' . $payment->currency_code . ';' . $status;
+        $amount = Str::of($payment->amount)->remove('.')->remove(',');
+        $string = $this->getSignatureKey() . ';' . $payment->merchant_id . ';' . $poid . ';' . $payment->code . ';' . $amount . ';' . $payment->currency_code . ';' . $status;
 
         return hash('sha512', strtoupper($string));
     }

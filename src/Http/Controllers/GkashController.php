@@ -28,6 +28,10 @@ class GkashController extends Controller
             'callbackurl' => $payment->callback_url,
         ];
 
+        if (config('gkash.log_request') === true) {
+            logger()->info('Gkash: Payment Request', $formInputs);
+        }
+
         return view('gkash::gkash.pay', compact('payment', 'formAction', 'formInputs'));
     }
 
@@ -46,7 +50,9 @@ class GkashController extends Controller
     {
         echo 'OK';
 
-        // logger()->info('Gkash Backend : Received', $request->all());
+        if (config('gkash.log_request') === true) {
+            logger()->info('Gkash Backend : Received', $request->all());
+        }
 
         $merchant_id = $request->CID;
         $poid = $request->POID;

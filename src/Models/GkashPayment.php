@@ -12,7 +12,7 @@ class GkashPayment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'code', 'ref_no', 'vendor_ref_no', 'currency_code', 'amount', 'return_url', 'callback_url',
+        'id', 'merchant_id', 'code', 'ref_no', 'vendor_ref_no', 'currency_code', 'amount', 'return_url', 'callback_url',
         'status', 'status_description', 'refund_status', 'refund_amount', 'refunded_at', 'description', 'metadata'
     ];
 
