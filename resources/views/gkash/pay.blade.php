@@ -1,7 +1,7 @@
 @extends('gkash::layouts.app')
 
 @section('content')
-<div class="container max-w-6xl mx-auto mt-20">
+<div class="container max-w-6xl mx-auto mt-20 px-5">
     <div class="flex flex-col justify-center items-center">
         <div class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" role="status" aria-label="loading">
             <span class="sr-only">Loading...</span>
